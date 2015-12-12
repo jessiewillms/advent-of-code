@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>day one</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+    var list_of_gifts = [];
+    var final_total = 0;
+	var getsTotal = 0;
+    function getJson(json) {
+
+        for (var i = 0; i < json.feed.entry.length; i++) {
+            entry = json.feed.entry[i];
+            
+            var items = entry.gsx$list.$t;
+
+            list_of_gifts.push(items)
+        }
+
+        var math_array = [];
+        for (var i = 0; i < list_of_gifts.length; i++) {
+
+            var arrayItem = list_of_gifts[i].split('x');
+
+
+            var l = arrayItem[0];
+            var w = arrayItem[1];
+            var h = arrayItem[2];
+
+            // console.log(l, w, h);
+			var math = (2 * l * w) + (2 * w * h) + (2 * h * l) + w * h;
+    
+           	math_array.push(math) 
+        };
+
+        var total_num = 0;
+		for (var i = 0; i < math_array.length; i++) {
+			total_num += math_array[i]
+		};
+		 console.log(total_num)
+    }
+    </script>
+    <script>
+    var key = '1whTgfSSX8e-aqpdLmEZ7Vsfz_pEkH53Gju_Mk1aZfv0';
+
+    var fullUrl = window.location.href,
+        sheetID = // location.search.substring(1);
+        urlStart = 'https://spreadsheets.google.com/feeds/list/',
+        urlEnd = '/1/public/values?alt=json-in-script&callback=getJson';
+    document.write("<script src=" + urlStart + key + urlEnd + "><\/script>");
+    </script>
+</body>
+
+</html>

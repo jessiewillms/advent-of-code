@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>day one</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <h1 id="wrapping-paper"></h1>
+     <script>
+    function getJson(json) {
+        list_of_gifts = [];
+        for (var i = 0; i < json.feed.entry.length; i++) {
+
+            var items = json.feed.entry[i].gsx$list.$t;
+
+            list_of_gifts.push(items)
+
+            
+        }
+        
+        var bigArray = [],
+            littleArray = [];
+        count = -1;
+        for (var i = 0; i < 1000; i++) { // 8
+            count++;
+            
+            var splitToSmArry = list_of_gifts[count].split('x').map(Number);
+            littleArray.push(splitToSmArry);
+
+            bigArray.push(splitToSmArry)
+            
+        };
+      
+        
+        var totalPaperAmout = 0;
+        console.log(bigArray.length)
+        for (var i = 0; i < bigArray.length; i++) {
+            array_smallest_num = [];
+            var l = bigArray[i][0],
+                w = bigArray[i][1],
+                h = bigArray[i][2];
+
+            array_smallest_num.push(l,w,h); 
+
+            array_smallest_num.sort(function(a, b) {
+                return a - b;
+            }) 
+
+            var smallestSide = array_smallest_num[0] * array_smallest_num[1]; // multiply the smallest sides
+
+            var boxMath = 2 * (l * w + w * h + h * l);
+            var finalMath = boxMath + smallestSide;
+            
+            totalPaperAmout+=finalMath;
+            console.log(totalPaperAmout)
+
+        };
+        console.log(totalPaperAmout)
+
+        
+       var geth1 = document.getElementById('wrapping-paper');
+       geth1.innerHTML = totalPaperAmout;
+
+    };
+
+
+    // calcWrappingPaper(); // call function to find paper needed for hard coded number
+    var array = [];
+    var calcWrappingPaper = function() {
+        // store present in string
+        var present1 = '1x1x10'; // 43 total
+
+        // convert string to arry
+        var splitPres1 = present1.split('x');
+
+        // the long slow way
+        var l = parseInt(splitPres1[0]), // 2
+            w = parseInt(splitPres1[1]), // 3
+            h = parseInt(splitPres1[2]); // 4
+
+        array.push(l, w, h); // puts intergers in the array
+
+        array.sort(function(a, b) {
+            return a - b;
+        })
+
+        var smallestSide = array[0] * array[1]; // multiply the smallest sides
+
+        var boxMath = 2 * (l * w + w * h + h * l);
+
+        var totalPaper = boxMath + smallestSide;
+
+        var getH1 = document.getElementById('wrapping-paper');
+        getH1.innerHTML = totalPaper; // update page
+
+    };
+
+
+
+    // 2x3x4 requires 2 * (6 + 12 + 8) = 52 square feet of wrapping paper plus 6 square feet of slack, for a total of 58 square feet.
+    // 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of wrapping paper plus 1 square foot of slack, for a total of 43 square feet.
+    </script>
+    <script>
+    var fullUrl = window.location.href,
+        urlStart = 'https://spreadsheets.google.com/feeds/list/',
+        key = '1whTgfSSX8e-aqpdLmEZ7Vsfz_pEkH53Gju_Mk1aZfv0',
+        urlEnd = '/1/public/values?alt=json-in-script&callback=getJson';
+    document.write("<script src=" + urlStart + key + urlEnd + "><\/script>");
+    </script>
+</body>
+
+</html>
+<!--     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
