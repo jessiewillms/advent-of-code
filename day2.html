@@ -9,65 +9,79 @@
 
 <body>
     <h1 id="wrapping-paper"></h1>
-     <script>
+    <script>
     function getJson(json) {
-        list_of_gifts = [];
-        for (var i = 0; i < json.feed.entry.length; i++) {
+        
+        list_of_gifts = []; // array for gifts to be stored in
+        
+        var getLength = json.feed.entry.length; // how many gifts
+        for (var i = 0; i < getLength; i++) {
 
             var items = json.feed.entry[i].gsx$list.$t;
 
             list_of_gifts.push(items)
-
-            
         }
         
-        var bigArray = [],
-            littleArray = [];
-        count = -1;
-        for (var i = 0; i < 1000; i++) { // 8
-            count++;
-            
+        var bigArray = [],      // array of arrays for each present
+            littleArray = [];   // array for each present
+            count = -1;         // counter for looping
+        
+        for (var i = 0; i < getLength; i++) { // 8
+            count++;            // add to counter
+
+            // split + convert to an interger
             var splitToSmArry = list_of_gifts[count].split('x').map(Number);
             littleArray.push(splitToSmArry);
 
+            // add to big array
             bigArray.push(splitToSmArry)
-            
+
         };
-      
-        
+
+
+        // add paper per box to this number
         var totalPaperAmout = 0;
-        console.log(bigArray.length)
-        for (var i = 0; i < bigArray.length; i++) {
+        
+        for (var i = 0; i < getLength; i++) {
+            // in every loop, create an empty array + populate it
             array_smallest_num = [];
+            
             var l = bigArray[i][0],
                 w = bigArray[i][1],
-                h = bigArray[i][2];
+                h = bigArray[i][2]; // each side
 
-            array_smallest_num.push(l,w,h); 
+            array_smallest_num.push(l, w, h); // make new array
 
             array_smallest_num.sort(function(a, b) {
                 return a - b;
-            }) 
+            }) // sort arrays for smallest side calc
 
-            var smallestSide = array_smallest_num[0] * array_smallest_num[1]; // multiply the smallest sides
-
-            var boxMath = 2 * (l * w + w * h + h * l);
-            var finalMath = boxMath + smallestSide;
+            // store smallest sides in variables
+            var smSide_1 = array_smallest_num[0],
+                smSide_2 = array_smallest_num[1]
             
-            totalPaperAmout+=finalMath;
-            console.log(totalPaperAmout)
+            // do math for smallest side
+            var smallestSide = smSide_1 * smSide_2; 
+
+            // do math for each box
+            var boxMath = 2 * (l * w + w * h + h * l);
+            
+            // add extra paper to box paper
+            var finalMath = boxMath + smallestSide;
+
+            totalPaperAmout += finalMath;
+            // console.log(totalPaperAmout)
 
         };
-        console.log(totalPaperAmout)
+        // console.log(totalPaperAmout)
 
-        
-       var geth1 = document.getElementById('wrapping-paper');
-       geth1.innerHTML = totalPaperAmout;
+        var geth1 = document.getElementById('wrapping-paper');
+        geth1.innerHTML = totalPaperAmout; //update html
 
     };
 
 
-    // calcWrappingPaper(); // call function to find paper needed for hard coded number
+    // paper needed for hard coded number
     var array = [];
     var calcWrappingPaper = function() {
         // store present in string
@@ -97,12 +111,9 @@
         getH1.innerHTML = totalPaper; // update page
 
     };
-
-
-
-    // 2x3x4 requires 2 * (6 + 12 + 8) = 52 square feet of wrapping paper plus 6 square feet of slack, for a total of 58 square feet.
-    // 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of wrapping paper plus 1 square foot of slack, for a total of 43 square feet.
+    // calcWrappingPaper(); // call this to find the paper for a single gift
     </script>
+    <!-- gets rest of the present dimensions -->
     <script>
     var fullUrl = window.location.href,
         urlStart = 'https://spreadsheets.google.com/feeds/list/',
